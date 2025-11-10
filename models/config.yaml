@@ -1,0 +1,157 @@
+  project_name: agtech # for wandb
+  exp_name: obj_s # experiment name
+
+  exp: ${exp_name}_${now_dir}
+
+  model_name: s # model size (n, s, m, l, x)
+
+  train:
+    ### Paths ###
+    root: /media/HDD04/DGX_Backup/AGTECH-AI-ML/AgTech_AI_ML/data_preparation_dfine/codes_dfine_data # project root with dataset and outputs
+    pretrained_dataset: obj2coco # coco, obj2coco
+    pretrained_model_path: pretrained/dfine_${model_name}_${train.pretrained_dataset}.pth
+    # pretrained_model_path: ${train.root}/custom_d_fine/output/models/obj369_s_2025-10-15/model.pt # dfine_m_obj2coco.pth
+
+    # data_path: ${train.root}/custom_d_fine/anpr_dataset/train # path to dataset
+    data_path: /media/HDD04/DGX_Backup/AGTECH-AI-ML/AgTech_AI_ML/data_preparation_dfine/compiled_data/soyabean_disease_dataset/
+    path_to_test_data: /media/HDD04/DGX_Backup/AGTECH-AI-ML/AgTech_AI_ML/data_preparation_dfine/compiled_data/soyabean_disease_dataset/test  # path to test set, used in infer script
+    path_to_save: ${train.root}/custom_d_fine/output/models/${exp} # where to save output
+    # path_to_save: ${train.root}/custom_d_fine/output/models/obj369_s_2025-10-03 # where to save output
+    resume: False
+
+    debug_img_path: ${train.root}/custom_d_fine/output/debug_images
+    eval_preds_path: ${train.root}/custom_d_fine/output/eval_preds
+    bench_img_path: ${train.root}/custom_d_fine/output/bench_imgs
+    infer_path: ${train.root}/custom_d_fine/output/infer
+
+    ### Configs ###
+    use_wandb: True
+    device: cuda
+    label_to_name: # dataset's classes
+      0: bacterial_blight
+      1: cercospora_leaf_blight
+      2: downey_mildew
+      3: frogeye
+      4: septoria_leaf_spot
+      5: soybean_rust
+      6: target_spot
+      
+    use_one_class: False
+
+    img_size: [800, 800] # (h, w)
+    keep_ratio: True # image aspect ratio, if True - image will be padded
+    to_visualize_eval: True # save images with gt and preds
+    debug_img_processing: True # save images after preprocessing
+
+    amp_enabled: True # use automatic mixed precision
+    clip_max_norm: 0.1 # gradient clipping
+
+    batch_size: 16 # physical, should fit on the device
+    b_accum_steps: 1 # grad accumulation (n * bs)
+    epochs: 300
+    early_stopping: 30 # 0 - no early stopping
+    ignore_background_epochs: 0 # background images are not used for N epochs in train set
+    num_workers: 8
+
+    ### Validation ###
+    conf_thresh: 0.5
+    iou_thresh: 0.5
+
+    ### EMA ###
+    use_ema: True # use exponential moving average model
+    ema_momentum: 0.9998
+
+    ### Optimizer and Scheduler ###
+    base_lr: ${train.lrs.${model_name}.base_lr}
+    backbone_lr: ${train.lrs.${model_name}.backbone_lr}
+    cycler_pct_start: 0.2
+    weight_decay: 0.000125
+    betas: [0.9, 0.999]
+    label_smoothing: 0.0
+
+    ### Augs ###
+    mosaic_augs:
+      mosaic_prob: 0.5
+      no_mosaic_epochs: 10
+      mosaic_scale: [0.9, 1.1]
+      degrees: 0.0 # not recommended if bbox precision is critical
+      translate: 0.15
+      shear: 0.5
+
+    augs:
+      rotation_degree: 3 # maximum +- rotation
+      rotation_p: 0.2 # probability of the rotation (with above degree)
+      multiscale_prob: 0.0
+      rotate_90: 0.0
+      left_right_flip: 0.1
+      up_down_flip: 0.0
+      to_gray: 0.01
+      blur: 0.03
+      gamma: 0.05
+      brightness: 0.05
+      noise: 0.02
+      coarse_dropout: 0.02
+      one_of_p: 0.3   # Probability of applying ANY weather effect
+      rain_p: 0.3     # Probability of rain *if* a weather effect is chosen
+      fog_p: 0.3      # Probability of fog *if* a weather effect is chosen
+      sun_flare_p: 0.2
+      shadow_p: 0.3
+      motion_blur_p: 0.1
+
+
+    ### Reproducibility ###
+    seed: 42
+    cudnn_fixed: True
+
+    ### Recommended learning rates ###
+    lrs:
+      n:
+        backbone_lr: 0.0004
+        base_lr: 0.0008
+      s:
+        backbone_lr: 0.00006  # can setup up to 0.0002
+        base_lr: 0.00025  # 0.0004
+      m:
+        backbone_lr: 0.00002  # 0.000025
+        base_lr: 0.00015  # 0.00025
+      l:
+        backbone_lr: 0.00000625 # 0.0000125
+        base_lr: 0.000125 # 0.00025
+      x:
+        backbone_lr: 0.0000015  # 0.0000025
+        base_lr: 0.0001  # 0.00025
+
+
+  split:
+    ignore_negatives: False # only use images with labels
+    shuffle: True
+    train_split: 0.90
+    val_split: 0.10 # test_split = 1 - train_split - val_split
+
+
+  export: # TensorRT must be done on the inference device
+    half: False # torch, tensorrt
+    max_batch_size: 16 # torch, tensorrt
+    dynamic_input: False # torch, openvino cpu only
+
+
+  infer:
+    to_crop: True  # if True - saves crops of detected objects
+    paddings: # if int - amount of pixes, if float - percentage of image size
+      w: 0.05
+      h: 0.05
+
+
+  ### service ###
+  defaults:
+    - _self_
+    - override hydra/hydra_logging: disabled
+    - override hydra/job_logging: disabled
+
+  hydra:
+    output_subdir: null
+    run:
+      dir: .
+
+  now_dir: &nowdir ${now:%Y-%m-%d}
+
