@@ -1,0 +1,8 @@
+ID   Class Name           Min Conf     Avg Conf     Max Conf    
+0    bacterial_blight     0.6019       0.7644       0.8555      
+1    cercospora_leaf_blight NaN          NaN          NaN         
+2    downey_mildew        0.6015       0.6687       0.8394      
+3    frogeye              NaN          NaN          NaN         
+4    septoria_leaf_spot   0.6546       0.6546       0.6546      
+5    soybean_rust         NaN          NaN          NaN         
+6    target_spot          NaN          NaN          NaN         
