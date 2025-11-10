@@ -50,30 +50,33 @@ The `classes.yaml` file contains the mapping of class IDs to names.
 
 leaf_disease_d_fine/
 │
-├─ classes.yaml # Class definitions for diseases
-├─ requirement.txt # Python dependencies
-├─ infer_model.py # Script for batch image inference
-├─ infer_model_video.py # Script for video inference
-├─ plotter.py # Visualizes annotations from image-label pairs
+├─ classes.yaml               # Class definitions for diseases
+├─ requirement.txt            # Python dependencies
+├─ infer_model.py             # Script for batch image inference
+├─ infer_model_video.py       # Script for video inference
+├─ plotter.py                 # Visualizes annotations from image-label pairs
 ├─ models/
-│ └─ soya_disease/
-│ ├─ model.pt # Pretrained model weights
-│ └─ config.yaml # Model configuration for training/inference
-└─ README.md # Project documentation
+│   └─ soya_disease/
+│       ├─ model.pt           # Pretrained model weights
+│       └─ config.yaml        # Model configuration for training/inference
+└─ README.md                  # Project documentation
 
 ---
 
 
 ## Installation
 
-1. Clone the repository:
+# 1. Clone the repository:
 git clone <your-repo-url>
 cd leaf_disease_d_fine
-Install Python dependencies:
+
+# 2. Install Python dependencies:
 pip install -r requirement.txt
-Make sure the custom_d_fine repository is available:
+
+# 3. Make sure the custom_d_fine repository is available:
 git clone https://github.com/ArgoHA/custom_d_fine
-Update the PROJECT_ROOT_PATH in scripts to point to your custom_d_fine directory.
+
+# 4. Update the PROJECT_ROOT_PATH in scripts to point to your custom_d_fine directory.
 
 # Configuration
 Update the following paths in infer_model.py or infer_model_video.py according to your system:
@@ -129,5 +132,12 @@ Install all dependencies via:
 pip install -r requirement.txt
 
 # References
-[custom_d_fine repository](https://github.com/ArgoHA/custom_d_fine/tree)
-Plant pathology research papers and datasets
+- [custom_d_fine repository](https://github.com/ArgoHA/custom_d_fine/tree)
+1. [Research on soybean leaf disease recognition in natural environment based on improved Yolov8 — Frontiers in Plant Science](https://www.frontiersin.org/journals/plant-science/articles/10.3389/fpls.2025.1523633/full?utm_source=chatgpt.com)
+2. [A classification method for soybean leaf diseases based on an improved deep learning network — Scientific Reports (Nature)](https://www.nature.com/articles/s41598-023-46492-3?utm_source=chatgpt.com)
+3. [Deep Learning Model for Classifying and Evaluating Soybean Leaf Damage — MDPI](https://www.mdpi.com/1422-0067/25/1/106?utm_source=chatgpt.com)
+4. [A recognition method of soybean leaf diseases based on an improved deep learning model — ScienceDirect](https://www.sciencedirect.com/science/article/abs/pii/S1574954123001255?utm_source=chatgpt.com)
+5. [Deep learning and computer vision in plant disease detection: a review — Springer](https://link.springer.com/article/10.1007/s10462-024-11100-x?utm_source=chatgpt.com)
+6. [Soybean Disease Detection and Segmentation Based on … — JEAI journal](https://journaljeai.com/index.php/JEAI/article/view/2132?utm_source=chatgpt.com)
+7. [Survey on Soybean Leaf Disease Detection — IJFANS](https://ijfans.org/uploads/paper/af3eba199c86ccffabe7e510ebe4d6f7.pdf?utm_source=chatgpt.com)
+8. [Soybean Leaf Disease Detection Using Machine Learning (GLCM + SVM) — JETIR](https://www.jetir.org/papers/JETIR2305A52.pdf?utm_source=chatgpt.com)
