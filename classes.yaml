@@ -1,0 +1,9 @@
+soyabean_disease_classes:
+  0: bacterial_blight
+  1: cercospora_leaf_blight
+  2: downey_mildew
+  3: frogeye
+  4: septoria_leaf_spot
+  5: soybean_rust
+  6: target_spot
+
