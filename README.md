@@ -23,7 +23,6 @@ This repository contains a deep learning pipeline for **identifying plant diseas
 - Detects multiple **soybean leaf diseases** in images.
 - Supports **batch inference** for images and **video inference**.
 - Generates **annotated images** and **detection summaries**.
-- Converts predictions to **YOLO-compatible labels** if required.
 - Provides a **plotter utility** to visualize ground truth and predicted annotations.
 
 ---
